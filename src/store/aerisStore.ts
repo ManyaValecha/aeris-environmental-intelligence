@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { DataMode, StationId, StationTelemetry } from '@/types';
-import type { StationForecast } from '@/types/forecast';
+import type { StationForecast, ForecastHorizon } from '@/types/forecast';
 import type { InterventionControls, ScenarioImpact } from '@/types/intervention';
 import { DELHI_NCR_STATIONS } from '@/data/stations';
 import { fetchCurrentReadings, DATA_MODE } from '@/services/apiClient';
@@ -22,6 +22,7 @@ interface AerisState {
   currentForecast: StationForecast | null;
   historicalSeries: HistoricalPoint[];
   activeAnomalies: AnomalyRecord[];
+  selectedHorizon: ForecastHorizon;
 
   // ─── Phase 8 Intervention Flight State ──────────────────────────────────────
   interventionControls: InterventionControls;
@@ -36,6 +37,7 @@ interface AerisState {
   // ─── Actions ────────────────────────────────────────────────────────────────
   refreshReadings: () => Promise<void>;
   selectStation: (id: StationId | null) => void;
+  setSelectedHorizon: (horizon: ForecastHorizon) => void;
   updateInterventionControls: (controls: Partial<InterventionControls>) => void;
   resetInterventionControls: () => void;
   startInterventionFlight: (stationId?: StationId) => void;
@@ -52,6 +54,7 @@ export const useAerisStore = create<AerisState>((set, get) => ({
   currentForecast: null,
   historicalSeries: [],
   activeAnomalies: [],
+  selectedHorizon: '6h',
 
   interventionControls: { ...DEFAULT_CONTROLS },
   activeScenarioImpact: null,
@@ -130,6 +133,10 @@ export const useAerisStore = create<AerisState>((set, get) => ({
     });
   },
 
+  setSelectedHorizon: (horizon) => {
+    set({ selectedHorizon: horizon });
+  },
+
   updateInterventionControls: (partialControls) => {
     const { interventionControls, currentForecast } = get();
     const updatedControls = { ...interventionControls, ...partialControls };
@@ -162,7 +169,6 @@ export const useAerisStore = create<AerisState>((set, get) => ({
 
   startInterventionFlight: (targetStationId) => {
     const { currentReadings, selectedStationId } = get();
-    // Default to Anand Vihar (high anomaly/AQI station) or currently selected
     const focusId =
       targetStationId ??
       selectedStationId ??

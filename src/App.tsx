@@ -5,6 +5,7 @@ import { StationGrid } from '@/components/stations/StationGrid';
 import { StationIntelligencePanel } from '@/components/analytics/StationIntelligencePanel';
 import { AtmosphericCanvas } from '@/components/common/AtmosphericCanvas';
 import { AtmosphericDigitalTwinBanner } from '@/components/common/AtmosphericDigitalTwinBanner';
+import { ForecastTimelineScrubber } from '@/components/analytics/ForecastTimelineScrubber';
 import { InterventionFlightHUD } from '@/components/analytics/InterventionFlightHUD';
 import { useAerisStore } from '@/store/aerisStore';
 
@@ -12,7 +13,7 @@ import { useAerisStore } from '@/store/aerisStore';
  * App
  *
  * AERIS Command Centre — root application component.
- * Phase 8: The Intervention Flight continuous interaction workflow & digital twin HUD.
+ * Immersive Atmospheric Digital Twin for Delhi NCR.
  */
 export function App() {
   const { currentReadings, selectedStationId, isLoading, refreshReadings, selectStation } =
@@ -59,6 +60,9 @@ export function App() {
       >
         {/* AERIS Signature Earth-Observation Digital Twin HUD */}
         <AtmosphericDigitalTwinBanner telemetry={selectedTelemetry} />
+
+        {/* Forecast Timeline Horizon Scrubber */}
+        <ForecastTimelineScrubber />
 
         {/* Core Split Screen: Spatial Map (Left) + 4-Stage Mission Briefing (Right) */}
         <main
