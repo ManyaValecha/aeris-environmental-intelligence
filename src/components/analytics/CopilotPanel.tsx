@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { useAerisStore } from '@/store/aerisStore';
 import { ProvenanceBadge } from '@/components/common/ProvenanceBadge';
 import { generateCopilotResponse } from '@/services/copilot/copilotService';
 import { computeScenarioImpact, DEFAULT_CONTROLS } from '@/services/interventionService';
@@ -234,6 +235,7 @@ export function CopilotPanel({
   anomalies,
   dataMode,
 }: CopilotPanelProps) {
+  const { activeScenarioImpact } = useAerisStore();
   const [response, setResponse] = useState<CopilotResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -250,8 +252,7 @@ export function CopilotPanel({
     setError(null);
 
     try {
-      // Default controls — use zero-intervention scenario to describe baseline
-      const scenario = computeScenarioImpact(forecast, DEFAULT_CONTROLS);
+      const scenario = activeScenarioImpact ?? computeScenarioImpact(forecast, DEFAULT_CONTROLS);
       const result = await generateCopilotResponse(
         telemetry,
         forecast,
@@ -266,15 +267,15 @@ export function CopilotPanel({
     } finally {
       setLoading(false);
     }
-  }, [telemetry, forecast, historical, anomalies, dataMode]);
+  }, [telemetry, forecast, historical, anomalies, dataMode, activeScenarioImpact]);
 
-  // Auto-generate when station changes (and data is available)
+  // Auto-generate when station or active scenario impact changes
   useEffect(() => {
     if (telemetry && forecast) {
       generate();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [telemetry?.stationId, forecast?.stationId]);
+  }, [telemetry?.stationId, forecast?.stationId, activeScenarioImpact?.generatedAt]);
 
   if (!telemetry || !forecast) {
     return (

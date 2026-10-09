@@ -4,7 +4,7 @@ import { useAerisStore } from '@/store/aerisStore';
 import { AwsArchitectureModal } from '@/components/analytics/AwsArchitectureModal';
 
 export function CommandHeader() {
-  const { dataMode, lastUpdated, isLoading, fetchError, refreshReadings } = useAerisStore();
+  const { dataMode, lastUpdated, isLoading, fetchError, refreshReadings, startInterventionFlight } = useAerisStore();
   const [now, setNow] = useState<Date>(new Date());
   const [isAwsModalOpen, setIsAwsModalOpen] = useState(false);
 
@@ -111,6 +111,27 @@ export function CommandHeader() {
             <span style={{ color: 'var(--color-text-secondary)', fontWeight: 500 }}>DELHI NCR</span>
             <span style={{ fontSize: 'var(--text-xs)' }}>8 MONITORING STATIONS</span>
           </div>
+
+          <button
+            onClick={() => startInterventionFlight()}
+            style={{
+              padding: '4px 10px',
+              backgroundColor: 'rgba(56, 189, 248, 0.15)',
+              border: '1px solid #38bdf8',
+              borderRadius: 'var(--radius-md)',
+              color: '#38bdf8',
+              fontSize: 'var(--text-xs)',
+              fontWeight: 700,
+              fontFamily: 'var(--font-mono)',
+              cursor: 'pointer',
+              boxShadow: '0 0 10px rgba(56, 189, 248, 0.2)',
+              transition: 'all 150ms ease',
+            }}
+            title="Launch 5-Stage Guided Intervention Flight Workflow"
+            id="launch-intervention-flight-btn"
+          >
+            ✈ INTERVENTION FLIGHT
+          </button>
 
           <button
             onClick={() => setIsAwsModalOpen(true)}

@@ -13,8 +13,8 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(4, 7, 13, 0.85)',
-        backdropFilter: 'blur(8px)',
+        backgroundColor: 'rgba(4, 7, 13, 0.88)',
+        backdropFilter: 'blur(10px)',
         zIndex: 100,
         display: 'flex',
         alignItems: 'center',
@@ -29,13 +29,13 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
       <div
         style={{
           width: '100%',
-          maxWidth: '840px',
+          maxWidth: '860px',
           maxHeight: '90vh',
           overflowY: 'auto',
           backgroundColor: 'var(--color-bg-surface)',
-          border: '1px solid var(--color-border)',
+          border: '1px solid rgba(56, 189, 248, 0.3)',
           borderRadius: 'var(--radius-lg)',
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7)',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.15)',
           padding: 'var(--space-6)',
           display: 'flex',
           flexDirection: 'column',
@@ -51,14 +51,15 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
                 style={{
                   fontSize: 'var(--text-xs)',
                   fontFamily: 'var(--font-mono)',
-                  color: 'var(--prov-reanalysis)',
-                  backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                  color: '#38bdf8',
+                  backgroundColor: 'rgba(56, 189, 248, 0.12)',
+                  border: '1px solid rgba(56, 189, 248, 0.3)',
                   padding: '2px 8px',
                   borderRadius: 'var(--radius-sm)',
-                  fontWeight: 600,
+                  fontWeight: 700,
                 }}
               >
-                AWS CDK v2 STACK
+                AWS CDK v2 ARCHITECTURE AUDIT
               </span>
               <span
                 style={{
@@ -67,7 +68,7 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
                   color: 'var(--color-text-muted)',
                 }}
               >
-                Synthesized Cloud Architecture
+                Synthesized Cloud Infrastructure & Local Tests
               </span>
             </div>
             <h2
@@ -76,10 +77,11 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
                 fontSize: 'var(--text-xl)',
                 fontWeight: 700,
                 color: 'var(--color-text-primary)',
+                fontFamily: 'var(--font-display)',
                 marginTop: 'var(--space-1)',
               }}
             >
-              AERIS AWS Production Integration
+              AERIS AWS Reference Architecture & Local Trace
             </h2>
           </div>
           <button
@@ -99,7 +101,7 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
           </button>
         </div>
 
-        {/* Architecture Topology */}
+        {/* Pipeline Topology */}
         <div
           style={{
             backgroundColor: 'var(--color-bg-base)',
@@ -117,17 +119,17 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
               fontFamily: 'var(--font-mono)',
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              color: 'var(--color-text-secondary)',
-              fontWeight: 600,
+              color: '#38bdf8',
+              fontWeight: 700,
             }}
           >
-            Pipeline Topology & Data Flow
+            End-to-End Telemetry Signal Lifecycle
           </div>
 
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
               gap: 'var(--space-3)',
               textAlign: 'center',
             }}
@@ -140,9 +142,9 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
                 border: '1px solid var(--color-border-subtle)',
               }}
             >
-              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>01 SOURCE</div>
-              <div style={{ fontWeight: '600', fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>CPCB / Reanalysis</div>
-              <div style={{ marginTop: '4px' }}><ProvenanceBadge provenance="REANALYSIS" /></div>
+              <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>01 SOURCE</div>
+              <div style={{ fontWeight: '600', fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>CPCB / IoT MQTT</div>
+              <div style={{ marginTop: '4px' }}><ProvenanceBadge provenance="MEASURED" compact /></div>
             </div>
 
             <div
@@ -153,9 +155,9 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
                 border: '1px solid var(--color-border-subtle)',
               }}
             >
-              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>02 SCHEDULER</div>
-              <div style={{ fontWeight: '600', fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>EventBridge</div>
-              <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>15-min Rate Rule</div>
+              <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>02 SCHEDULER</div>
+              <div style={{ fontWeight: '600', fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>EventBridge</div>
+              <div style={{ marginTop: '4px' }}><ProvenanceBadge provenance="SIMULATED" compact /></div>
             </div>
 
             <div
@@ -166,9 +168,9 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
                 border: '1px solid var(--color-border-subtle)',
               }}
             >
-              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>03 INGESTION</div>
-              <div style={{ fontWeight: '600', fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>AWS Lambda</div>
-              <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>Schema Validator</div>
+              <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>03 VALIDATION</div>
+              <div style={{ fontWeight: '600', fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>Ingestion Lambda</div>
+              <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>Boundary Guard</div>
             </div>
 
             <div
@@ -179,9 +181,9 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
                 border: '1px solid var(--color-border-subtle)',
               }}
             >
-              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>04 STORAGE</div>
-              <div style={{ fontWeight: '600', fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>DynamoDB</div>
-              <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>On-Demand Table</div>
+              <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>04 STORAGE</div>
+              <div style={{ fontWeight: '600', fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>DynamoDB + S3</div>
+              <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>PK=STATION#id</div>
             </div>
 
             <div
@@ -192,50 +194,71 @@ export function AwsArchitectureModal({ isOpen, onClose }: AwsArchitectureModalPr
                 border: '1px solid var(--color-border-subtle)',
               }}
             >
-              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>05 API & AI</div>
-              <div style={{ fontWeight: '600', fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>APIGW + Bedrock</div>
-              <div style={{ marginTop: '4px' }}><ProvenanceBadge provenance="AI_GENERATED" /></div>
+              <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>05 REASONING</div>
+              <div style={{ fontWeight: '600', fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>Amazon Bedrock</div>
+              <div style={{ marginTop: '4px' }}><ProvenanceBadge provenance="AI_GENERATED" compact /></div>
             </div>
           </div>
         </div>
 
-        {/* Security & Provenance Rules */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
-          <div
-            style={{
-              padding: 'var(--space-4)',
-              backgroundColor: 'var(--color-bg-base)',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--color-border-subtle)',
-            }}
-          >
-            <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-2)' }}>
-              🔒 Security & IAM
-            </h3>
-            <ul style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', paddingLeft: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <li>Least-privilege Lambda execution roles</li>
-              <li>S3 Block Public Access & SSL enforced</li>
-              <li>DynamoDB server-side KMS encryption</li>
-              <li>Zero credentials in VITE client bundles</li>
-            </ul>
+        {/* Verification Matrix: Local vs Cloud */}
+        <div
+          style={{
+            padding: 'var(--space-4)',
+            backgroundColor: 'var(--color-bg-base)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--color-border-subtle)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'var(--space-3)',
+          }}
+        >
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-text-primary)' }}>
+            ✓ LOCAL VERIFICATION vs. CLOUD PREREQUISITES AUDIT
           </div>
 
-          <div
-            style={{
-              padding: 'var(--space-4)',
-              backgroundColor: 'var(--color-bg-base)',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--color-border-subtle)',
-            }}
-          >
-            <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-2)' }}>
-              🏷️ Provenance Guarantee
-            </h3>
-            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
-              Infrastructure routing never alters data provenance. EventBridge simulated triggers stay labeled as{' '}
-              <span style={{ color: 'var(--prov-simulated)', fontWeight: 600 }}>SIMULATED</span> — never upgraded to MEASURED.
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+            <div>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#22c55e', marginBottom: '4px' }}>
+                LOCAL VERIFIED LOGIC (100% Zero-Cost Tested)
+              </div>
+              <ul style={{ fontSize: '11px', color: 'var(--color-text-secondary)', paddingLeft: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <li>CDK v2 CloudFormation synthesis (`cdk synth`)</li>
+                <li>Ingestion Lambda validation (`validateTelemetryPayload`)</li>
+                <li>API Gateway proxy routing (`api.handler`)</li>
+                <li>Bedrock prompt context grounding (`buildCopilotContext`)</li>
+                <li>Frontend transparent fallback to DEMO mode</li>
+              </ul>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', marginBottom: '4px' }}>
+                CLOUD DEPLOYED PREREQUISITES
+              </div>
+              <ul style={{ fontSize: '11px', color: 'var(--color-text-secondary)', paddingLeft: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <li>Live AWS DynamoDB On-Demand Table instance</li>
+                <li>Live AWS S3 bucket (`aeris-model-artifacts`)</li>
+                <li>Live API Gateway REST endpoint (`VITE_AERIS_API_URL`)</li>
+                <li>Active AWS IAM credentials for Bedrock runtime</li>
+              </ul>
             </div>
           </div>
+        </div>
+
+        {/* Deployment Commands */}
+        <div
+          style={{
+            padding: 'var(--space-4)',
+            backgroundColor: 'rgba(15, 23, 42, 0.8)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--color-border)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+          }}
+        >
+          <div style={{ color: 'var(--color-text-muted)', marginBottom: '4px' }}>Authorized Deployment Commands (Requires AWS Credentials):</div>
+          <div style={{ color: '#38bdf8' }}>cd infra && npm run build && cdk synth</div>
+          <div style={{ color: '#38bdf8', marginTop: '2px' }}>cdk deploy AerisStack --require-approval broadening</div>
         </div>
 
         {/* Footer */}

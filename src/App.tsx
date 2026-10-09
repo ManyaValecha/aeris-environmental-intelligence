@@ -5,13 +5,14 @@ import { StationGrid } from '@/components/stations/StationGrid';
 import { StationIntelligencePanel } from '@/components/analytics/StationIntelligencePanel';
 import { AtmosphericCanvas } from '@/components/common/AtmosphericCanvas';
 import { AtmosphericDigitalTwinBanner } from '@/components/common/AtmosphericDigitalTwinBanner';
+import { InterventionFlightHUD } from '@/components/analytics/InterventionFlightHUD';
 import { useAerisStore } from '@/store/aerisStore';
 
 /**
  * App
  *
  * AERIS Command Centre — root application component.
- * Phase 7: Competition-winning atmospheric visual digital twin & guided mission briefing.
+ * Phase 8: The Intervention Flight continuous interaction workflow & digital twin HUD.
  */
 export function App() {
   const { currentReadings, selectedStationId, isLoading, refreshReadings, selectStation } =
@@ -40,6 +41,9 @@ export function App() {
 
       {/* Command Navigation Header */}
       <CommandHeader />
+
+      {/* The Intervention Flight HUD Banner */}
+      <InterventionFlightHUD />
 
       {/* Main Command Dashboard Layout */}
       <div
