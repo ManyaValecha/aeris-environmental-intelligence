@@ -1,0 +1,833 @@
+{
+  "/AerisStack": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisTelemetryTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "AerisTelemetryTable2BEE71EA"
+      }
+    }
+  ],
+  "/AerisStack/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/AerisStack/AerisIotTelemetryRule": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisIotTelemetryRule"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:168:20)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/ApiGatewayUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiGatewayUrl"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:194:5)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/DynamoDBTableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBTableName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:200:5)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/S3ArtifactBucketName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "S3ArtifactBucketName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:205:5)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/AerisStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/AerisStack/AerisTelemetryTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisTelemetryTable2BEE71EA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:34:27)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisArtifactBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisArtifactBucketCE41EFE8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:45:27)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/AerisStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/AerisStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/AerisStack/IngestionLogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IngestionLogGroup7C7CFA52"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new LogGroup2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:62:28)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/IngestionLambda/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IngestionLambdaEF25F265"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:68:28)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/ApiLogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiLogGroup1DEDFC07"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new LogGroup2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:86:25)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/ApiLambda/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiLambda91D2282D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:92:22)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApi86229005"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:120:20)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApiAccount2F85AF76"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:120:20)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApiEndpointDE55ECD9"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:120:20)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisScheduledIngestionRule/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisScheduledIngestionRule8EAC8C8E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Rule2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:152:26)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisScheduledIngestionRule/AllowEventRuleAerisStackIngestionLambdaC63EA29A": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisScheduledIngestionRuleAllowEventRuleAerisStackIngestionLambdaC63EA29ADBB1299C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.<anonymous> in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:158:24)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisIotRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisIotRoleAFA66561"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Role2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:161:21)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/IngestionErrorsAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IngestionErrorsAlarm9FDF8AD3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Alarm2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:185:5)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:17:5)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisArtifactBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisArtifactBucketPolicy0688D948"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:45:27)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)"
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/AerisStack/AerisArtifactBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisArtifactBucketAutoDeleteObjectsCustomResource94EF421F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/AerisStack/IngestionLambda/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IngestionLambdaServiceRole447B9B96"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:68:28)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/ApiLambda/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiLambdaServiceRole1CC7D0F3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:92:22)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/CloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApiCloudWatchRole08A1D11A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:120:20)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApiDeploymentD89D5E6C2926908541fe17f2c464367ebd7613d6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:120:20)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/DeploymentStage.prod/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApiDeploymentStageprod2E824FBF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:120:20)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisIotRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisIotRoleDefaultPolicy4DFDC02B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.grantInvoke in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:166:26)"
+      ]
+    }
+  ],
+  "/AerisStack/IngestionLambda/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IngestionLambdaServiceRoleDefaultPolicyD3A17461"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/AerisStack/ApiLambda/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiLambdaServiceRoleDefaultPolicyF1B57697"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApiOPTIONS5CDBA455"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:120:20)"
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistations1B2EAE02"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:138:43)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/telemetry/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApitelemetryFA034000"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:148:44)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsOPTIONS4CE33AEB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:138:43)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)"
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/GET/ApiPermission.AerisStackAerisRestApi897B405E.GET..stations": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsGETApiPermissionAerisStackAerisRestApi897B405EGETstations99C2054B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:139:17)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/GET/ApiPermission.Test.AerisStackAerisRestApi897B405E.GET..stations": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsGETApiPermissionTestAerisStackAerisRestApi897B405EGETstations5CC4CA3E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:139:17)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsGET4EF4E0DB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:139:17)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationId6D26382E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:141:38)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/telemetry/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApitelemetryOPTIONS24FCC141"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:148:44)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)"
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/telemetry/POST/ApiPermission.AerisStackAerisRestApi897B405E.POST..telemetry": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApitelemetryPOSTApiPermissionAerisStackAerisRestApi897B405EPOSTtelemetry6BFD3E05"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:149:18)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/telemetry/POST/ApiPermission.Test.AerisStackAerisRestApi897B405E.POST..telemetry": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApitelemetryPOSTApiPermissionTestAerisStackAerisRestApi897B405EPOSTtelemetry369C76DE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:149:18)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/telemetry/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApitelemetryPOST2AF68748"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:149:18)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdOPTIONS16C301B6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:141:38)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)"
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/latest/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdlatestD5709DDF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:142:36)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/history/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdhistory578BCC53"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:145:37)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/latest/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdlatestOPTIONS54CA0E11"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:142:36)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)"
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/latest/GET/ApiPermission.AerisStackAerisRestApi897B405E.GET..stations.{stationId}.latest": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdlatestGETApiPermissionAerisStackAerisRestApi897B405EGETstationsstationIdlatestAB4C4536"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:143:15)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/latest/GET/ApiPermission.Test.AerisStackAerisRestApi897B405E.GET..stations.{stationId}.latest": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdlatestGETApiPermissionTestAerisStackAerisRestApi897B405EGETstationsstationIdlatestCFA12CCC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:143:15)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/latest/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdlatestGETB10E3B45"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:143:15)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/history/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdhistoryOPTIONS48DAADAA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addResource in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:145:37)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)"
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/history/GET/ApiPermission.AerisStackAerisRestApi897B405E.GET..stations.{stationId}.history": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdhistoryGETApiPermissionAerisStackAerisRestApi897B405EGETstationsstationIdhistoryFC89BACE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:146:16)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/history/GET/ApiPermission.Test.AerisStackAerisRestApi897B405E.GET..stations.{stationId}.history": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdhistoryGETApiPermissionTestAerisStackAerisRestApi897B405EGETstationsstationIdhistory3B864A62"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:146:16)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/AerisStack/AerisRestApi/Default/stations/{stationId}/history/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AerisRestApistationsstationIdhistoryGET7A25DCFF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...PropertyInjectable.addMethod in aws-cdk-lib...",
+        "new AerisStack (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/lib/aeris-stack.ts:146:16)",
+        "<anonymous> (/Users/manyavalecha/Documents/aeris-environmental-intelligence/infra/bin/infra.ts:8:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+# ─── Dependencies ─────────────────────────────────────
+node_modules/
+
+# ─── Build outputs ─────────────────────────────────────
+dist/
+dist-ssr/
+*.local
+
+# ─── Environment – NEVER commit real credentials ───────
+.env
+.env.local
+.env.production
+.env.*.local
+
+# ─── Editor ────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ─── OS ────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── ML / data artefacts ───────────────────────────────
+services/ml/models/*.pkl
+services/ml/models/*.onnx
+*.egg-info/
+__pycache__/
+.ipynb_checkpoints/
+
+# ─── Test / coverage ───────────────────────────────────
+coverage/

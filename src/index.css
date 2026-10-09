@@ -1,0 +1,421 @@
+/* ============================================================================
+   AERIS — Command Centre Design System
+   ============================================================================
+   Token-based CSS design system for a premium dark-slate environmental
+   intelligence dashboard. No framework dependencies. Pure CSS custom properties.
+   ============================================================================ */
+
+/* ─── Fonts ─────────────────────────────────────────────────────────────────── */
+/* Loaded via index.html from Google Fonts. Applied here as defaults. */
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────────── */
+:root {
+  /* Surface palette */
+  --color-bg-base:        #080c14;  /* Deepest background */
+  --color-bg-surface:     #0e1420;  /* Panel background */
+  --color-bg-elevated:    #141c2e;  /* Cards, elevated panels */
+  --color-bg-glass:       rgba(20, 28, 46, 0.72);
+  --color-border:         rgba(99, 120, 165, 0.18);
+  --color-border-subtle:  rgba(99, 120, 165, 0.08);
+
+  /* Text palette */
+  --color-text-primary:   #e8edf5;
+  --color-text-secondary: #8b9cb8;
+  --color-text-muted:     #4a5568;
+  --color-text-inverse:   #080c14;
+
+  /* Brand accent */
+  --color-accent:         #3b82f6;  /* Primary interactive blue */
+  --color-accent-glow:    rgba(59, 130, 246, 0.25);
+  --color-accent-subtle:  rgba(59, 130, 246, 0.08);
+
+  /* AQI status colors — NAQI categories */
+  --aqi-good:             #22c55e;
+  --aqi-satisfactory:     #84cc16;
+  --aqi-moderate:         #f59e0b;
+  --aqi-poor:             #f97316;
+  --aqi-very-poor:        #ef4444;
+  --aqi-severe:           #7c3aed;
+
+  /* Provenance badge colors */
+  --prov-measured:        #22c55e;
+  --prov-reanalysis:      #38bdf8;
+  --prov-simulated:       #f59e0b;
+  --prov-predicted:       #3b82f6;
+  --prov-estimated:       #a855f7;
+  --prov-ai-generated:    #06b6d4;
+
+  /* Spacing scale */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Border radius */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  20px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  /* Font sizes */
+  --text-xs:   11px;
+  --text-sm:   12px;
+  --text-base: 14px;
+  --text-md:   15px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  28px;
+  --text-3xl:  36px;
+  --text-4xl:  48px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-glow-accent: 0 0 20px rgba(59, 130, 246, 0.3);
+
+  /* Transitions */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 350ms ease;
+
+  /* Z-index stack */
+  --z-map:     10;
+  --z-panel:   20;
+  --z-overlay: 30;
+  --z-modal:   40;
+  --z-toast:   50;
+}
+
+/* ─── CSS Reset & Base ──────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Typography ────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.text-muted {
+  color: var(--color-text-secondary);
+}
+
+/* ─── Layout Utilities ──────────────────────────────────────────────────────── */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.flex-1 { flex: 1; }
+.flex-wrap { flex-wrap: wrap; }
+.w-full { width: 100%; }
+.min-w-0 { min-width: 0; }
+
+/* ─── Panel / Card Components ───────────────────────────────────────────────── */
+.panel {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.panel-glass {
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.panel-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+}
+
+/* ─── Provenance Badges ─────────────────────────────────────────────────────── */
+.prov-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  border: 1px solid currentColor;
+}
+
+.prov-badge::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.prov-badge--measured    { color: var(--prov-measured);    background: rgba(34, 197, 94, 0.08); }
+.prov-badge--reanalysis  { color: var(--prov-reanalysis);  background: rgba(56, 189, 248, 0.08); }
+.prov-badge--simulated   { color: var(--prov-simulated);   background: rgba(245, 158, 11, 0.08); }
+.prov-badge--predicted   { color: var(--prov-predicted);   background: rgba(59, 130, 246, 0.08); }
+.prov-badge--estimated   { color: var(--prov-estimated);   background: rgba(168, 85, 247, 0.08); }
+.prov-badge--ai-generated { color: var(--prov-ai-generated); background: rgba(6, 182, 212, 0.08); }
+
+/* ─── AQI Status Chips ──────────────────────────────────────────────────────── */
+.aqi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* ─── Mode Toggle Pill ──────────────────────────────────────────────────────── */
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: default;
+  user-select: none;
+}
+
+.mode-pill--real {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--aqi-good);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.mode-pill--demo {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--aqi-moderate);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.mode-pill--dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ─── Data Value Displays ───────────────────────────────────────────────────── */
+.data-value-primary {
+  font-family: var(--font-mono);
+  font-size: var(--text-4xl);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.data-value-secondary {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-weight: 400;
+}
+
+.data-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+}
+
+.data-unit {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ─── Skeleton Loading ──────────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-elevated) 25%,
+    var(--color-bg-surface) 50%,
+    var(--color-bg-elevated) 75%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ─── Scrollbars ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* ─── Focus & Accessibility ─────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+button { cursor: pointer; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ─── Error Banner ──────────────────────────────────────────────────────────── */
+.error-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  color: #fca5a5;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+}
+
+/* ─── Leaflet Overrides ─────────────────────────────────────────────────────── */
+.leaflet-container {
+  background: #0a1628 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.leaflet-tile-pane {
+  filter: brightness(0.65) saturate(0.4) hue-rotate(185deg);
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--color-bg-elevated) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  color: var(--color-text-primary) !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--color-bg-elevated) !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--color-bg-elevated) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--color-bg-surface) !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(8, 12, 20, 0.8) !important;
+  color: var(--color-text-muted) !important;
+  font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-text-secondary) !important;
+}
+
+/* ─── Fade-in animation ─────────────────────────────────────────────────────── */
+.fade-in {
+  animation: fadeIn 300ms ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Responsive breakpoints ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --text-4xl: 36px;
+    --text-3xl: 28px;
+  }
+}

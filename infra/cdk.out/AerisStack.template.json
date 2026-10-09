@@ -1,0 +1,1738 @@
+{
+ "Description": "AERIS — AI Environmental Response & Intelligence System (AWS Stack)",
+ "Resources": {
+  "AerisTelemetryTable2BEE71EA": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "PK",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "SK",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "PK",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "SK",
+      "KeyType": "RANGE"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "SSESpecification": {
+     "SSEEnabled": true
+    },
+    "TableName": "AerisTelemetry"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisTelemetryTable/Resource"
+   }
+  },
+  "AerisArtifactBucketCE41EFE8": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "BucketName": "aeris-model-artifacts-123456789012-us-east-1",
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "ExpirationInDays": 90,
+       "Id": "ExpireRawExports90Days",
+       "Prefix": "exports/",
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisArtifactBucket/Resource"
+   }
+  },
+  "AerisArtifactBucketPolicy0688D948": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "AerisArtifactBucketCE41EFE8"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AerisArtifactBucketCE41EFE8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "AerisArtifactBucketCE41EFE8",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AerisArtifactBucketCE41EFE8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "AerisArtifactBucketCE41EFE8",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisArtifactBucket/Policy/Resource"
+   }
+  },
+  "AerisArtifactBucketAutoDeleteObjectsCustomResource94EF421F": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "AerisArtifactBucketCE41EFE8"
+    }
+   },
+   "DependsOn": [
+    "AerisArtifactBucketPolicy0688D948"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisArtifactBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs24.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "AerisArtifactBucketCE41EFE8"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "IngestionLogGroup7C7CFA52": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/aws/lambda/aeris-ingestion-handler",
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/IngestionLogGroup/Resource"
+   }
+  },
+  "IngestionLambdaServiceRole447B9B96": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/IngestionLambda/ServiceRole/Resource"
+   }
+  },
+  "IngestionLambdaServiceRoleDefaultPolicyD3A17461": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AerisTelemetryTable2BEE71EA",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AerisArtifactBucketCE41EFE8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "AerisArtifactBucketCE41EFE8",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "IngestionLambdaServiceRoleDefaultPolicyD3A17461",
+    "Roles": [
+     {
+      "Ref": "IngestionLambdaServiceRole447B9B96"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/IngestionLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "IngestionLambdaEF25F265": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
+     "S3Key": "d815d9b280991f367bf09966878e993c76f8e7cdd8ddee504d9e1ed6ebfc4b96.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "AerisTelemetryTable2BEE71EA"
+      },
+      "BUCKET_NAME": {
+       "Ref": "AerisArtifactBucketCE41EFE8"
+      }
+     }
+    },
+    "FunctionName": "aeris-ingestion-handler",
+    "Handler": "ingest.handler",
+    "LoggingConfig": {
+     "LogGroup": {
+      "Ref": "IngestionLogGroup7C7CFA52"
+     }
+    },
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "IngestionLambdaServiceRole447B9B96",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 15
+   },
+   "DependsOn": [
+    "IngestionLambdaServiceRoleDefaultPolicyD3A17461",
+    "IngestionLambdaServiceRole447B9B96"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/IngestionLambda/Resource",
+    "aws:asset:path": "asset.d815d9b280991f367bf09966878e993c76f8e7cdd8ddee504d9e1ed6ebfc4b96",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ApiLogGroup1DEDFC07": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/aws/lambda/aeris-api-handler",
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/ApiLogGroup/Resource"
+   }
+  },
+  "ApiLambdaServiceRole1CC7D0F3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/ApiLambda/ServiceRole/Resource"
+   }
+  },
+  "ApiLambdaServiceRoleDefaultPolicyF1B57697": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AerisTelemetryTable2BEE71EA",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AerisTelemetryTable2BEE71EA",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "bedrock:InvokeModel",
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:bedrock:us-east-1::foundation-model/*",
+        "arn:aws:bedrock:us-east-1:123456789012:inference-profile/*"
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiLambdaServiceRoleDefaultPolicyF1B57697",
+    "Roles": [
+     {
+      "Ref": "ApiLambdaServiceRole1CC7D0F3"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/ApiLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiLambda91D2282D": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
+     "S3Key": "d815d9b280991f367bf09966878e993c76f8e7cdd8ddee504d9e1ed6ebfc4b96.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "AerisTelemetryTable2BEE71EA"
+      },
+      "BEDROCK_MODEL_ID": "us.anthropic.claude-3-5-sonnet-20240620-v1:0"
+     }
+    },
+    "FunctionName": "aeris-api-handler",
+    "Handler": "api.handler",
+    "LoggingConfig": {
+     "LogGroup": {
+      "Ref": "ApiLogGroup1DEDFC07"
+     }
+    },
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "ApiLambdaServiceRole1CC7D0F3",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "ApiLambdaServiceRoleDefaultPolicyF1B57697",
+    "ApiLambdaServiceRole1CC7D0F3"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/ApiLambda/Resource",
+    "aws:asset:path": "asset.d815d9b280991f367bf09966878e993c76f8e7cdd8ddee504d9e1ed6ebfc4b96",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "AerisRestApi86229005": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "REST API for Delhi NCR Air Quality Telemetry, History, and Ingestion.",
+    "Name": "AERIS Environmental Intelligence API"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Resource"
+   }
+  },
+  "AerisRestApiCloudWatchRole08A1D11A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/CloudWatchRole/Resource"
+   }
+  },
+  "AerisRestApiAccount2F85AF76": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "AerisRestApiCloudWatchRole08A1D11A",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "AerisRestApi86229005"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Account"
+   }
+  },
+  "AerisRestApiDeploymentD89D5E6C2926908541fe17f2c464367ebd7613d6": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "REST API for Delhi NCR Air Quality Telemetry, History, and Ingestion.",
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "DependsOn": [
+    "AerisRestApiOPTIONS5CDBA455",
+    "AerisRestApistationsstationIdhistoryGET7A25DCFF",
+    "AerisRestApistationsstationIdhistoryOPTIONS48DAADAA",
+    "AerisRestApistationsstationIdhistory578BCC53",
+    "AerisRestApistationsstationIdlatestGETB10E3B45",
+    "AerisRestApistationsstationIdlatestOPTIONS54CA0E11",
+    "AerisRestApistationsstationIdlatestD5709DDF",
+    "AerisRestApistationsstationIdOPTIONS16C301B6",
+    "AerisRestApistationsstationId6D26382E",
+    "AerisRestApistationsGET4EF4E0DB",
+    "AerisRestApistationsOPTIONS4CE33AEB",
+    "AerisRestApistations1B2EAE02",
+    "AerisRestApitelemetryOPTIONS24FCC141",
+    "AerisRestApitelemetryPOST2AF68748",
+    "AerisRestApitelemetryFA034000"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "AerisRestApiDeploymentStageprod2E824FBF": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "AerisRestApiDeploymentD89D5E6C2926908541fe17f2c464367ebd7613d6"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    },
+    "StageName": "prod",
+    "TracingEnabled": true
+   },
+   "DependsOn": [
+    "AerisRestApiAccount2F85AF76"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "AerisRestApiOPTIONS5CDBA455": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "AerisRestApi86229005",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/OPTIONS/Resource"
+   }
+  },
+  "AerisRestApistations1B2EAE02": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "AerisRestApi86229005",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "stations",
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/Resource"
+   }
+  },
+  "AerisRestApistationsOPTIONS4CE33AEB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AerisRestApistations1B2EAE02"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/OPTIONS/Resource"
+   }
+  },
+  "AerisRestApistationsGETApiPermissionAerisStackAerisRestApi897B405EGETstations99C2054B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambda91D2282D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:123456789012:",
+       {
+        "Ref": "AerisRestApi86229005"
+       },
+       "/",
+       {
+        "Ref": "AerisRestApiDeploymentStageprod2E824FBF"
+       },
+       "/GET/stations"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/GET/ApiPermission.AerisStackAerisRestApi897B405E.GET..stations"
+   }
+  },
+  "AerisRestApistationsGETApiPermissionTestAerisStackAerisRestApi897B405EGETstations5CC4CA3E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambda91D2282D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:123456789012:",
+       {
+        "Ref": "AerisRestApi86229005"
+       },
+       "/test-invoke-stage/GET/stations"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/GET/ApiPermission.Test.AerisStackAerisRestApi897B405E.GET..stations"
+   }
+  },
+  "AerisRestApistationsGET4EF4E0DB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ApiLambda91D2282D",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AerisRestApistations1B2EAE02"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/GET/Resource"
+   }
+  },
+  "AerisRestApistationsstationId6D26382E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "AerisRestApistations1B2EAE02"
+    },
+    "PathPart": "{stationId}",
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/Resource"
+   }
+  },
+  "AerisRestApistationsstationIdOPTIONS16C301B6": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AerisRestApistationsstationId6D26382E"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/OPTIONS/Resource"
+   }
+  },
+  "AerisRestApistationsstationIdlatestD5709DDF": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "AerisRestApistationsstationId6D26382E"
+    },
+    "PathPart": "latest",
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/latest/Resource"
+   }
+  },
+  "AerisRestApistationsstationIdlatestOPTIONS54CA0E11": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AerisRestApistationsstationIdlatestD5709DDF"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/latest/OPTIONS/Resource"
+   }
+  },
+  "AerisRestApistationsstationIdlatestGETApiPermissionAerisStackAerisRestApi897B405EGETstationsstationIdlatestAB4C4536": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambda91D2282D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:123456789012:",
+       {
+        "Ref": "AerisRestApi86229005"
+       },
+       "/",
+       {
+        "Ref": "AerisRestApiDeploymentStageprod2E824FBF"
+       },
+       "/GET/stations/*/latest"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/latest/GET/ApiPermission.AerisStackAerisRestApi897B405E.GET..stations.{stationId}.latest"
+   }
+  },
+  "AerisRestApistationsstationIdlatestGETApiPermissionTestAerisStackAerisRestApi897B405EGETstationsstationIdlatestCFA12CCC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambda91D2282D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:123456789012:",
+       {
+        "Ref": "AerisRestApi86229005"
+       },
+       "/test-invoke-stage/GET/stations/*/latest"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/latest/GET/ApiPermission.Test.AerisStackAerisRestApi897B405E.GET..stations.{stationId}.latest"
+   }
+  },
+  "AerisRestApistationsstationIdlatestGETB10E3B45": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ApiLambda91D2282D",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AerisRestApistationsstationIdlatestD5709DDF"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/latest/GET/Resource"
+   }
+  },
+  "AerisRestApistationsstationIdhistory578BCC53": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "AerisRestApistationsstationId6D26382E"
+    },
+    "PathPart": "history",
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/history/Resource"
+   }
+  },
+  "AerisRestApistationsstationIdhistoryOPTIONS48DAADAA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AerisRestApistationsstationIdhistory578BCC53"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/history/OPTIONS/Resource"
+   }
+  },
+  "AerisRestApistationsstationIdhistoryGETApiPermissionAerisStackAerisRestApi897B405EGETstationsstationIdhistoryFC89BACE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambda91D2282D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:123456789012:",
+       {
+        "Ref": "AerisRestApi86229005"
+       },
+       "/",
+       {
+        "Ref": "AerisRestApiDeploymentStageprod2E824FBF"
+       },
+       "/GET/stations/*/history"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/history/GET/ApiPermission.AerisStackAerisRestApi897B405E.GET..stations.{stationId}.history"
+   }
+  },
+  "AerisRestApistationsstationIdhistoryGETApiPermissionTestAerisStackAerisRestApi897B405EGETstationsstationIdhistory3B864A62": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambda91D2282D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:123456789012:",
+       {
+        "Ref": "AerisRestApi86229005"
+       },
+       "/test-invoke-stage/GET/stations/*/history"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/history/GET/ApiPermission.Test.AerisStackAerisRestApi897B405E.GET..stations.{stationId}.history"
+   }
+  },
+  "AerisRestApistationsstationIdhistoryGET7A25DCFF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ApiLambda91D2282D",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AerisRestApistationsstationIdhistory578BCC53"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/stations/{stationId}/history/GET/Resource"
+   }
+  },
+  "AerisRestApitelemetryFA034000": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "AerisRestApi86229005",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "telemetry",
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/telemetry/Resource"
+   }
+  },
+  "AerisRestApitelemetryOPTIONS24FCC141": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AerisRestApitelemetryFA034000"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/telemetry/OPTIONS/Resource"
+   }
+  },
+  "AerisRestApitelemetryPOSTApiPermissionAerisStackAerisRestApi897B405EPOSTtelemetry6BFD3E05": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambda91D2282D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:123456789012:",
+       {
+        "Ref": "AerisRestApi86229005"
+       },
+       "/",
+       {
+        "Ref": "AerisRestApiDeploymentStageprod2E824FBF"
+       },
+       "/POST/telemetry"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/telemetry/POST/ApiPermission.AerisStackAerisRestApi897B405E.POST..telemetry"
+   }
+  },
+  "AerisRestApitelemetryPOSTApiPermissionTestAerisStackAerisRestApi897B405EPOSTtelemetry369C76DE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambda91D2282D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:123456789012:",
+       {
+        "Ref": "AerisRestApi86229005"
+       },
+       "/test-invoke-stage/POST/telemetry"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/telemetry/POST/ApiPermission.Test.AerisStackAerisRestApi897B405E.POST..telemetry"
+   }
+  },
+  "AerisRestApitelemetryPOST2AF68748": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ApiLambda91D2282D",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AerisRestApitelemetryFA034000"
+    },
+    "RestApiId": {
+     "Ref": "AerisRestApi86229005"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisRestApi/Default/telemetry/POST/Resource"
+   }
+  },
+  "AerisScheduledIngestionRule8EAC8C8E": {
+   "Type": "AWS::Events::Rule",
+   "Properties": {
+    "Description": "Triggers periodic simulated/reanalysis telemetry ingestion every 15 minutes",
+    "Name": "aeris-15min-ingestion-rule",
+    "ScheduleExpression": "rate(15 minutes)",
+    "State": "ENABLED",
+    "Targets": [
+     {
+      "Arn": {
+       "Fn::GetAtt": [
+        "IngestionLambdaEF25F265",
+        "Arn"
+       ]
+      },
+      "Id": "Target0"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisScheduledIngestionRule/Resource"
+   }
+  },
+  "AerisScheduledIngestionRuleAllowEventRuleAerisStackIngestionLambdaC63EA29ADBB1299C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "IngestionLambdaEF25F265",
+      "Arn"
+     ]
+    },
+    "Principal": "events.amazonaws.com",
+    "SourceArn": {
+     "Fn::GetAtt": [
+      "AerisScheduledIngestionRule8EAC8C8E",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisScheduledIngestionRule/AllowEventRuleAerisStackIngestionLambdaC63EA29A"
+   }
+  },
+  "AerisIotRoleAFA66561": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "iot.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "Role allowing IoT Core rule to invoke AERIS ingestion Lambda"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisIotRole/Resource"
+   }
+  },
+  "AerisIotRoleDefaultPolicy4DFDC02B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "IngestionLambdaEF25F265",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "IngestionLambdaEF25F265",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AerisIotRoleDefaultPolicy4DFDC02B",
+    "Roles": [
+     {
+      "Ref": "AerisIotRoleAFA66561"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisIotRole/DefaultPolicy/Resource"
+   }
+  },
+  "AerisIotTelemetryRule": {
+   "Type": "AWS::IoT::TopicRule",
+   "Properties": {
+    "RuleName": "AerisStationTelemetryRule",
+    "TopicRulePayload": {
+     "Actions": [
+      {
+       "Lambda": {
+        "FunctionArn": {
+         "Fn::GetAtt": [
+          "IngestionLambdaEF25F265",
+          "Arn"
+         ]
+        }
+       }
+      }
+     ],
+     "Description": "Routes MQTT telemetry from Delhi NCR stations to AERIS Ingestion Lambda",
+     "RuleDisabled": false,
+     "Sql": "SELECT * FROM 'aeris/stations/+/telemetry'"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/AerisIotTelemetryRule"
+   }
+  },
+  "IngestionErrorsAlarm9FDF8AD3": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alerts when ingestion Lambda fails >= 3 times in 5 minutes",
+    "AlarmName": "aeris-ingestion-errors-alarm",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "FunctionName",
+      "Value": {
+       "Ref": "IngestionLambdaEF25F265"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "Errors",
+    "Namespace": "AWS/Lambda",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 3
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/IngestionErrorsAlarm/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/5WRTW8bIRCGf0t8xtN2fajU26ZRc0kVa51bVUUsO9lgA7NaBjsW4r9XgCOvqlxymgde5p0PGmi+N/D1Rp78Wg2HtdE9xB1LdRDy5J/jcHbS0tBDfJK9QfHzxRVIwm8g3gZ1QM6Xlf7EldVv2q1+rJaG2clvoEge6tM2MN2hQcbHfo+K/Sr9FVXaktHqfHWt509414QdS0aLbml9Kz0mYWj0EB9ovJ8pTLnQOydhpO0HCfFXcIo1uawueYuz1d5rckloaSF2VNdS4rX1SnlNz9J7ZA9tDkJOepSMJ3mG2KHndtIl+4qtUhQcizucDJ3zAPl2cdqxHEvJCh16CrPCPJv4jfxKQxYv9K5eihROAo95LxC7cGk+5C/VxJA/mCatiqIMheEkWb1CbI2cbekvQ0oL5+CZ7EeF/pO2Mx31gHPptKwjT6DdmHMeA0+Bk3A0IOz9l2PTQLOBbzd7r/V6Do61Rehq/AeYTEmBtwIAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AerisStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "AerisRestApiEndpointDE55ECD9": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "AerisRestApi86229005"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "AerisRestApiDeploymentStageprod2E824FBF"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiGatewayUrl": {
+   "Description": "Production API Gateway Endpoint Base URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "AerisRestApi86229005"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "AerisRestApiDeploymentStageprod2E824FBF"
+      },
+      "/"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "AerisApiGatewayUrl"
+   }
+  },
+  "DynamoDBTableName": {
+   "Description": "DynamoDB Telemetry Table Name",
+   "Value": {
+    "Ref": "AerisTelemetryTable2BEE71EA"
+   }
+  },
+  "S3ArtifactBucketName": {
+   "Description": "S3 Model Artifact Storage Bucket Name",
+   "Value": {
+    "Ref": "AerisArtifactBucketCE41EFE8"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
