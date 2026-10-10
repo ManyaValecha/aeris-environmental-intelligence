@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+infra/node_modules/
+
+# Build output
+dist/
+infra/dist/
+
+# Local deployment and environment files
+.vercel/
+.env
+.env.*
+!.env.example
+
+# macOS and editor files
+.DS_Store
+.vscode/
+.idea/
+
+# CDK generated output
+infra/cdk.out/
+cdk.out/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Generated TypeScript output and CDK artifacts
+infra/cdk.out/
+infra/dist/
+infra/lib/*.js
+infra/lib/*.d.ts
+infra/lambda/*.js
+infra/lambda/*.d.ts
+infra/test/*.js
+infra/test/*.d.ts
+infra/bin/*.js
+infra/bin/*.d.ts

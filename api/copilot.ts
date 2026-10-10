@@ -56,7 +56,6 @@ content: [{ text: JSON.stringify(context) }],
 inferenceConfig: { maxTokens: 1200, temperature: 0 },
 }));
 
-````
 const text = response.output?.message?.content
   ?.map((block) => ('text' in block ? block.text : ''))
   .join('')

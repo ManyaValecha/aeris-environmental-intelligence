@@ -3,7 +3,16 @@
  *
  * Validates incoming telemetry payload against strict schemas and domain bounds.
  * Preserves data provenance exactly as provided — NEVER converts SIMULATED to MEASURED.
+ * On success, persists validated telemetry to DynamoDB AerisTelemetry table.
  */
+
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
+
+const ddbClient = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(ddbClient);
+
+const TABLE_NAME = process.env.TABLE_NAME || 'AerisTelemetry';
 
 export interface TelemetryPayload {
   stationId: string;
@@ -31,7 +40,7 @@ export interface ValidationResult {
   errors: string[];
 }
 
-const VALID_STATION_IDS = new Set([
+export const VALID_STATION_IDS = new Set([
   'DELHI_ANAND_VIHAR',
   'DELHI_ITO',
   'DELHI_RK_PURAM',
@@ -53,6 +62,7 @@ const VALID_PROVENANCE = new Set([
 
 /**
  * Validates a telemetry payload for boundary, domain, and type integrity.
+ * Explicit physical range bounds prevent garbage data from entering DynamoDB.
  */
 export function validateTelemetryPayload(payload: any): ValidationResult {
   const errors: string[] = [];
@@ -126,67 +136,132 @@ export function validateTelemetryPayload(payload: any): ValidationResult {
 }
 
 /**
+ * Persists a validated telemetry payload to DynamoDB.
+ * PK = STATION#{stationId}, SK = TIMESTAMP#{iso} — enables time-range queries per station.
+ * Provenance is stored exactly as supplied — never mutated.
+ */
+async function persistToDb(body: TelemetryPayload): Promise<void> {
+  const item = {
+    PK: `STATION#${body.stationId}`,
+    SK: `TIMESTAMP#${body.timestamp}`,
+    stationId: body.stationId,
+    timestamp: body.timestamp,
+    provenance: body.provenance, // EXPLICIT PROVENANCE PRESERVATION — never mutated
+    pollutants: body.pollutants,
+    weather: body.weather ?? null,
+    ingestedAt: new Date().toISOString(),
+    ttl: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60, // 30-day TTL auto-expire
+  };
+
+  await docClient.send(
+    new PutCommand({
+      TableName: TABLE_NAME,
+      Item: item,
+      // Idempotent: overwrite if same PK+SK already exists (replay-safe)
+      ConditionExpression: 'attribute_not_exists(PK) OR provenance = :prov',
+      ExpressionAttributeValues: { ':prov': body.provenance },
+    })
+  );
+
+  console.log(`[AERIS Ingest] Persisted PK=${item.PK} SK=${item.SK} provenance=${item.provenance}`);
+}
+
+/** Demo sweep payloads used by EventBridge 15-minute scheduled rule */
+const SCHEDULED_SWEEP: TelemetryPayload[] = [
+  {
+    stationId: 'DELHI_ANAND_VIHAR',
+    timestamp: new Date().toISOString(),
+    provenance: 'SIMULATED',
+    pollutants: { pm25: 285, pm10: 410, no2: 92, so2: 22, co: 2.4, o3: 38 },
+    weather: { temperatureCelsius: 29, relativeHumidityPct: 58, windSpeedKmH: 3.5, windDirectionDeg: 260, windDirectionLabel: 'W' },
+  },
+  {
+    stationId: 'DELHI_ITO',
+    timestamp: new Date().toISOString(),
+    provenance: 'SIMULATED',
+    pollutants: { pm25: 175, pm10: 285, no2: 80, so2: 17, co: 2.0, o3: 44 },
+    weather: { temperatureCelsius: 28, relativeHumidityPct: 60, windSpeedKmH: 5.0, windDirectionDeg: 280, windDirectionLabel: 'WNW' },
+  },
+  {
+    stationId: 'DELHI_RK_PURAM',
+    timestamp: new Date().toISOString(),
+    provenance: 'SIMULATED',
+    pollutants: { pm25: 210, pm10: 325, no2: 85, so2: 19, co: 2.2, o3: 41 },
+    weather: { temperatureCelsius: 27, relativeHumidityPct: 62, windSpeedKmH: 4.2, windDirectionDeg: 270, windDirectionLabel: 'W' },
+  },
+  {
+    stationId: 'NOIDA',
+    timestamp: new Date().toISOString(),
+    provenance: 'SIMULATED',
+    pollutants: { pm25: 195, pm10: 300, no2: 76, so2: 15, co: 1.8, o3: 47 },
+    weather: { temperatureCelsius: 30, relativeHumidityPct: 55, windSpeedKmH: 6.1, windDirectionDeg: 295, windDirectionLabel: 'WNW' },
+  },
+];
+
+/**
  * AWS Lambda Handler for Telemetry Ingestion.
  */
 export async function handler(event: any): Promise<any> {
-  console.log('[AERIS Ingestion Lambda] Received ingestion event:', JSON.stringify(event));
+  console.log('[AERIS Ingestion Lambda] Received event:', JSON.stringify(event));
 
-  // Handle EventBridge Scheduled Rule Invocation
+  const responseHeaders = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+  };
+
+  // ── EventBridge Scheduled Rule Invocation ──────────────────────────────────
   if (event.source === 'aws.events' || event['detail-type'] === 'Scheduled Event') {
-    console.log('[AERIS EventBridge Ingestion] Triggered scheduled rule — generated SIMULATED telemetry payload (never MEASURED)');
-    const scheduledPayload: TelemetryPayload = {
-      stationId: 'DELHI_ITO',
-      timestamp: new Date().toISOString(),
-      provenance: 'SIMULATED', // EXPLICITLY SIMULATED PROVENANCE FOR SCHEDULED DEMO TRIGGERS
-      pollutants: {
-        pm25: 175,
-        pm10: 285,
-        no2: 80,
-        so2: 17,
-        co: 2.0,
-        o3: 44,
-      },
-      weather: {
-        temperatureCelsius: 28,
-        relativeHumidityPct: 60,
-        windSpeedKmH: 5.0,
-        windDirectionDeg: 280,
-        windDirectionLabel: 'WNW',
-      },
-    };
+    console.log('[AERIS EventBridge] Scheduled sweep — provenance=SIMULATED on all records');
+    const ts = new Date().toISOString();
+    const sweep = SCHEDULED_SWEEP.map(p => ({ ...p, timestamp: ts }));
+
+    const results: Array<{ stationId: string; ok: boolean; error?: string }> = [];
+    for (const payload of sweep) {
+      try {
+        await persistToDb(payload);
+        results.push({ stationId: payload.stationId, ok: true });
+      } catch (err: any) {
+        // ConditionalCheckFailed = already exists with same provenance (idempotent) → OK
+        if (err?.name === 'ConditionalCheckFailedException') {
+          results.push({ stationId: payload.stationId, ok: true });
+        } else {
+          console.error(`[AERIS EventBridge] Failed to persist ${payload.stationId}:`, err);
+          results.push({ stationId: payload.stationId, ok: false, error: err?.message });
+        }
+      }
+    }
+
     return {
       statusCode: 201,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: responseHeaders,
       body: JSON.stringify({
         ok: true,
-        message: 'EventBridge scheduled telemetry ingested as SIMULATED',
+        message: 'EventBridge scheduled sweep ingested — provenance=SIMULATED (never MEASURED)',
         provenance: 'SIMULATED',
-        stationId: scheduledPayload.stationId,
-        timestamp: scheduledPayload.timestamp,
+        timestamp: ts,
+        stations: results,
       }),
     };
   }
 
+  // ── REST POST /telemetry Invocation ───────────────────────────────────────
   let body: any;
   try {
     body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
-  } catch (err) {
+  } catch {
     return {
       statusCode: 400,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({
-        ok: false,
-        error: 'Malformed JSON payload body',
-      }),
+      headers: responseHeaders,
+      body: JSON.stringify({ ok: false, error: 'Malformed JSON payload body' }),
     };
   }
 
   const validation = validateTelemetryPayload(body);
   if (!validation.valid) {
-    console.warn('[AERIS Ingestion Lambda] Validation failed:', validation.errors);
+    console.warn('[AERIS Ingest] Validation failed:', validation.errors);
     return {
       statusCode: 422,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: responseHeaders,
       body: JSON.stringify({
         ok: false,
         error: 'Validation failed',
@@ -195,25 +270,37 @@ export async function handler(event: any): Promise<any> {
     };
   }
 
-  const item = {
-    PK: `STATION#${body.stationId}`,
-    SK: `TIMESTAMP#${body.timestamp}`,
-    stationId: body.stationId,
-    timestamp: body.timestamp,
-    provenance: body.provenance, // EXPLICIT PROVENANCE PRESERVATION
-    pollutants: body.pollutants,
-    weather: body.weather || null,
-    ingestedAt: new Date().toISOString(),
-  };
-
-  console.log(`[AERIS Ingestion Lambda] Successfully validated item PK=${item.PK} with provenance ${item.provenance}`);
+  try {
+    await persistToDb(body as TelemetryPayload);
+  } catch (err: any) {
+    if (err?.name === 'ConditionalCheckFailedException') {
+      // Idempotent duplicate — return 200 OK
+      return {
+        statusCode: 200,
+        headers: responseHeaders,
+        body: JSON.stringify({
+          ok: true,
+          message: 'Duplicate telemetry record (idempotent)',
+          stationId: body.stationId,
+          timestamp: body.timestamp,
+          provenance: body.provenance,
+        }),
+      };
+    }
+    console.error('[AERIS Ingest] DynamoDB PutCommand failed:', err);
+    return {
+      statusCode: 502,
+      headers: responseHeaders,
+      body: JSON.stringify({ ok: false, error: 'DynamoDB write failed — check Lambda IAM and table configuration' }),
+    };
+  }
 
   return {
     statusCode: 201,
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    headers: responseHeaders,
     body: JSON.stringify({
       ok: true,
-      message: 'Telemetry successfully ingested',
+      message: 'Telemetry successfully ingested to DynamoDB',
       stationId: body.stationId,
       timestamp: body.timestamp,
       provenance: body.provenance,

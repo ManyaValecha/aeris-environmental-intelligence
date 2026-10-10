@@ -67,9 +67,9 @@ export class AerisStack extends cdk.Stack {
 
     this.ingestionLambda = new lambda.Function(this, 'IngestionLambda', {
       functionName: 'aeris-ingestion-handler',
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_24_X,
       handler: 'ingest.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../dist/lambda')),
       environment: {
         TABLE_NAME: this.telemetryTable.tableName,
         BUCKET_NAME: this.artifactBucket.bucketName,
@@ -91,9 +91,9 @@ export class AerisStack extends cdk.Stack {
 
     this.apiLambda = new lambda.Function(this, 'ApiLambda', {
       functionName: 'aeris-api-handler',
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_24_X,
       handler: 'api.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../dist/lambda')),
       environment: {
         TABLE_NAME: this.telemetryTable.tableName,
         BEDROCK_MODEL_ID: bedrockModelId,
@@ -181,6 +181,12 @@ export class AerisStack extends cdk.Stack {
         ],
         ruleDisabled: false,
       },
+    });
+
+    // Allow only this IoT rule to invoke the ingestion Lambda.
+    this.ingestionLambda.addPermission('AllowAerisIotRuleInvoke', {
+      principal: new iam.ServicePrincipal('iot.amazonaws.com'),
+      sourceArn: this.iotRule.attrArn,
     });
 
     // ─── 8. CloudWatch Observability ──────────────────────────────────────────

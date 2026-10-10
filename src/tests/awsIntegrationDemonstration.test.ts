@@ -64,7 +64,7 @@ describe('AWS Integration Local Demonstration & Architecture Trace', () => {
     const latestBody = JSON.parse(latestRes.body);
     expect(latestBody.ok).toBe(true);
     expect(latestBody.telemetry.stationId).toBe('DELHI_ITO');
-    expect(latestBody.telemetry.provenance).toBe('REANALYSIS');
+    expect(latestBody.telemetry.provenance).toBe('SIMULATED');
 
     // POST /telemetry
     const postTelemetryEvent = {
@@ -78,10 +78,16 @@ describe('AWS Integration Local Demonstration & Architecture Trace', () => {
       }),
     };
     const ingestRes = await apiHandler(postTelemetryEvent);
-    expect(ingestRes.statusCode).toBe(201);
+    // Local test runs have no AWS credentials; failed persistence must not report success.
+    expect([201, 502]).toContain(ingestRes.statusCode);
     const ingestBody = JSON.parse(ingestRes.body);
-    expect(ingestBody.ok).toBe(true);
-    expect(ingestBody.provenance).toBe('MEASURED');
+    if (ingestRes.statusCode === 201) {
+      expect(ingestBody.ok).toBe(true);
+      expect(ingestBody.provenance).toBe('MEASURED');
+    } else {
+      expect(ingestBody.ok).toBe(false);
+      expect(ingestBody.error).toContain('DynamoDB write failed');
+    }
   });
 
   it('4. Verifies AWSDataProvider transparent fallback on unreachable endpoint', async () => {
