@@ -6,6 +6,19 @@
  */
 
 import { handler as ingestHandler } from './ingest';
+import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-runtime';
+
+const bedrock = new BedrockRuntimeClient({});
+const COPILOT_SYSTEM_PROMPT = [
+  'You are AERIS, an environmental intelligence assistant for Delhi NCR.',
+  'Use only the supplied JSON. Never invent measurements, forecasts, causes, or confidence scores.',
+  'Do not present AI text as measured data or correlation as causation.',
+  'The data may be simulated; never call it live unless verified.',
+  'Return valid JSON with keys what, why, next, action, disclaimers.',
+  'Use concise summaries and lists for evidence, factors, forecasts, and recommendations.',
+  'Use only supplied forecast values; do not invent missing forecasts.'
+].join(' ');
+
 
 export async function handler(event: any): Promise<any> {
   const path = event.path || event.resource || '/';
@@ -29,7 +42,36 @@ export async function handler(event: any): Promise<any> {
     return ingestHandler(event);
   }
 
-  // GET /stations
+    // POST /copilot — server-side Bedrock inference
+  if (httpMethod === 'POST' && (path === '/copilot' || path.endsWith('/copilot'))) {
+    try {
+      const context = JSON.parse(event.body || '{}');
+      if (!context || typeof context !== 'object' || Array.isArray(context)) {
+        return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: 'A JSON context object is required' }) };
+      }
+      const response = await bedrock.send(new ConverseCommand({
+        modelId: process.env.BEDROCK_MODEL_ID || 'us.amazon.nova-micro-v1:0',
+        system: [{ text: COPILOT_SYSTEM_PROMPT }],
+        messages: [{ role: 'user', content: [{ text: JSON.stringify(context) }] }],
+        inferenceConfig: { maxTokens: 1400, temperature: 0.1 }
+      }));
+      const answer = response.output?.message?.content?.find(block => 'text' in block)?.text;
+      if (!answer) throw new Error('Bedrock returned no text');
+      let result;
+      try { result = JSON.parse(answer); }
+      catch { throw new Error('Bedrock response was not valid JSON'); }
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ ok: true, generatedBy: 'BEDROCK', dataMode: context.dataMode || 'UNKNOWN', result })
+      };
+    } catch (error) {
+      console.error('[AERIS Copilot] Bedrock request failed:', error);
+      return { statusCode: 502, headers, body: JSON.stringify({ ok: false, error: 'Bedrock unavailable; use deterministic fallback.' }) };
+    }
+  }
+
+// GET /stations
   if (httpMethod === 'GET' && (path === '/stations' || path.endsWith('/stations'))) {
     return {
       statusCode: 200,

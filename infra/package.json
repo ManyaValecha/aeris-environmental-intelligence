@@ -23,6 +23,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.1148.0",
     "@aws-sdk/client-dynamodb": "^3.556.0",
     "@aws-sdk/lib-dynamodb": "^3.556.0"
   }

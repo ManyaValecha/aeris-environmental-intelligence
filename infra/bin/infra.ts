@@ -11,7 +11,7 @@ new AerisStack(app, 'AerisStack', {
     region: process.env.CDK_DEFAULT_REGION || 'us-east-1',
   },
   description: 'AERIS — AI Environmental Response & Intelligence System (AWS Stack)',
-  bedrockModelId: process.env.BEDROCK_MODEL_ID || 'us.anthropic.claude-3-5-sonnet-20240620-v1:0',
+  bedrockModelId: process.env.BEDROCK_MODEL_ID || 'us.amazon.nova-micro-v1:0',
 });
 
 app.synth();

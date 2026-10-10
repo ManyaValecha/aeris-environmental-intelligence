@@ -28,7 +28,7 @@ export class AerisStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: AerisStackProps) {
     super(scope, id, props);
 
-    const bedrockModelId = props?.bedrockModelId || 'us.anthropic.claude-3-5-sonnet-20240620-v1:0';
+    const bedrockModelId = props?.bedrockModelId || 'us.amazon.nova-micro-v1:0';
 
     // ─── 1. DynamoDB Table ───────────────────────────────────────────────────
     this.telemetryTable = new dynamodb.Table(this, 'AerisTelemetryTable', {
@@ -147,6 +147,8 @@ export class AerisStack extends cdk.Stack {
 
     const telemetryRes = this.restApi.root.addResource('telemetry');
     telemetryRes.addMethod('POST', lambdaIntegration); // POST /telemetry
+    const copilotRes = this.restApi.root.addResource('copilot');
+    copilotRes.addMethod('POST', lambdaIntegration); // POST /copilot
 
     // ─── 6. EventBridge Scheduled Ingestion ──────────────────────────────────
     this.scheduledRule = new events.Rule(this, 'AerisScheduledIngestionRule', {
