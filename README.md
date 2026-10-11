@@ -331,7 +331,7 @@ npm run dev
 ```
 
 Open **[http://localhost:5173](http://localhost:5173)**
-
+https://env-hack.vercel.app/
 > The app runs fully in **offline demo mode** with no AWS credentials required. Every feature works, all data labelled `SIMULATED`.
 
 ---
