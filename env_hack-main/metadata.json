@@ -1,0 +1,7 @@
+{
+  "name": "AERIS — Environmental Intelligence Delhi NCR",
+  "description": "Environmental intelligence and decision platform for Delhi NCR: real-time CAAQMS air quality monitoring, anomaly detection, multi-horizon ML forecasting, and policy intervention modeling.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

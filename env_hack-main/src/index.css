@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #1d1626;
+  --ink-soft: #5c5066;
+  --paper: #f8f2ea;
+  --paper-deep: #eee3d5;
+  --paper-light: #fffaf3;
+  --sun: #ffc44d;
+  --sun-hover: #ffd57a;
+  --coral: #ff6a3d;
+  --violet: #7b5cff;
+  --mint: #2fd18f;
+  --danger: #ef3b4b;
+  --night: #16111e;
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--paper);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.font-mono, code, .tabular-nums {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Neo-brutalist core utility classes matching reference website */
+.brutal-card {
+  border: 3px solid var(--ink);
+  background: var(--paper-light);
+  box-shadow: 8px 8px 0 var(--ink);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brutal-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 10px 10px 0 var(--ink);
+}
+
+.brutal-slab {
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
+}
+
+.brutal-screen {
+  border: 3px solid var(--ink);
+  background: var(--night);
+  box-shadow: 12px 12px 0 var(--coral);
+}
+
+.brutal-sticker {
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.65rem;
+  font-weight: 900;
+  display: inline-flex;
+}
+
+.brutal-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.brutal-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+
+.brutal-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.brutal-num {
+  font-variant-numeric: tabular-nums;
+  -webkit-text-stroke: 2px var(--ink);
+  color: transparent;
+}
+
+.tilt-shadow {
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.tilt-shadow-coral {
+  box-shadow: 10px 10px 0 var(--coral);
+}
+
+.tilt-shadow-sun {
+  box-shadow: 10px 10px 0 var(--sun);
+}
+
+.tilt-shadow-violet {
+  box-shadow: 10px 10px 0 var(--violet);
+}
+
+.tilt-shadow-mint {
+  box-shadow: 10px 10px 0 var(--mint);
+}
+
+.brutal-ticker {
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  background: var(--ink);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.brutal-ticker__track {
+  width: max-content;
+  display: flex;
+  animation: brutal-ticker 32s linear infinite;
+}
+
+.brutal-ticker__track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes brutal-ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Subtle dot grid pattern on paper background */
+.brutal-grid {
+  background-image: radial-gradient(var(--ink-soft) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
