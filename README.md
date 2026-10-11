@@ -335,6 +335,8 @@ Open **[http://localhost:5173](http://localhost:5173)**
 > The app runs fully in **offline demo mode** with no AWS credentials required. Every feature works, all data labelled `SIMULATED`.
 
 ---
+<img width="1437" height="958" alt="Screenshot 2026-10-11 at 12 43 38 PM" src="https://github.com/user-attachments/assets/141c79dc-99ca-41ee-94e2-58782097238a" />
+<img width="1669" height="609" alt="Screenshot 2026-10-11 at 12 42 52 PM" src="https://github.com/user-attachments/assets/0dfef721-bf3b-44a8-9585-4137f39c4e99" />
 
 ## 🧪 Test Suite
 
