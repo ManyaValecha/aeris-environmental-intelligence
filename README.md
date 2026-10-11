@@ -1,3 +1,6 @@
+<img width="1656" height="955" alt="Screenshot 2026-10-11 at 12 40 37 PM" src="https://github.com/user-attachments/assets/f8735c77-fe27-4732-8f3c-ec684426dd5a" />
+<img width="1668" height="682" alt="Screenshot 2026-10-11 at 12 39 05 PM" src="https://github.com/user-attachments/assets/f18cff3c-25fd-45bd-a98d-87bed1625da7" />
+<img width="1697" height="946" alt="Screenshot 2026-10-11 at 12 38 09 PM" src="https://github.com/user-attachments/assets/463031f5-e5a6-4d54-8491-88c6b1a0ab68" />
 <div align="center">
 
 # 🌫️ AERIS
